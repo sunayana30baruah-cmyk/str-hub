@@ -167,17 +167,17 @@
 <script>
 const ACCOUNTS = [
   { id:"pds", name:"Pacific Dental Services", shortName:"PDS Health", ae:"Brian J", color:"#3B6FE0", colorLight:"#EEF3FD", competitor:"Yext", dealStage:"Pre-Engagement", closeTarget:"Q3 2026", engagementScore:2, contacts:{total:22,liValidated:13,working:0,converted:2,keyContacts:["Nina Robinson (VP National Marketing)"]}, nextAction:{text:"Run Demandbase display + LinkedIn message ad to Nina Robinson before H2 window opens.",owner:"ABM + Brian J",dueDate:"Mar 25"}, outreachDraft:{channel:"LinkedIn Message Ad",sender:"Brian J",body:"Hi [First Name],\n\nPDS Health's rebrand across 1,000 locations is a significant undertaking — and what patients find on Google, ChatGPT, and Apple Maps at each location needs to match.\n\nWe work with multi-location health systems to ensure every location reflects the right brand story in AI search and review platforms — automatically, at scale.\n\nWorth a conversation ahead of your H2 planning cycle?"} },
-  { id:"multicare", name:"MultiCare Health System", shortName:"MultiCare", ae:"Brian J", color:"#7C4DCC", colorLight:"#F3EEFB", competitor:"Press Ganey", dealStage:"Pre-Engagement", closeTarget:"Q2–Q3 2026", engagementScore:3, contacts:{total:23,liValidated:9,working:1,converted:0,keyContacts:["Karla Sclater (Working)","Aaron Cohen (CGO — new hire)"]}, nextAction:{text:"Target Aaron Cohen (CGO) on LinkedIn with platform unification + AI search messaging.",owner:"ABM + Brian J",dueDate:"Mar 28"}, outreachDraft:{channel:"LinkedIn InMail (from Brian J)",sender:"Brian J",body:"Hi Aaron,\n\nCongrats on the CGO appointment — exciting role with the growth agenda at MultiCare.\n\nOne thing that comes up consistently for health systems at your scale is keeping patient-facing presence — reviews, listings, AI search — consistent as the system grows.\n\nWe work with health systems at exactly this inflection point. Happy to share how others have approached it.\n\nWorth 20 minutes?"} },
-  { id:"fullspeed", name:"FullSpeed Automotive", shortName:"FullSpeed Auto", ae:"Brian Bulkley", color:"#C07A00", colorLight:"#FDF6E7", competitor:"None identified", dealStage:"Early Outreach", closeTarget:"Q2 2026", engagementScore:3, contacts:{total:12,liValidated:9,working:3,converted:0,keyContacts:["Stacey Pool (CMO — Working)","Vanessa Allen (Working)","Bethany Kaufman (Working)"]}, nextAction:{text:"Send Stacey Pool Sun Auto Tire case study via LinkedIn.",owner:"Brian Bulkley + ABM",dueDate:"Mar 20"}, outreachDraft:{channel:"LinkedIn Message (from Brian Bulkley)",sender:"Brian Bulkley",body:"Hi Stacey,\n\nCongrats on the CMO role at FullSpeed — exciting time with the franchise growth momentum you're building.\n\nOne of our customers, Sun Auto Tire, faced a similar challenge managing customer experience and local visibility across a rapidly expanding multi-brand footprint. Happy to share what they figured out.\n\nWould a quick call make sense?"} },
-  { id:"advocate", name:"Advocate Health", shortName:"Advocate Health", ae:"Jordan", color:"#CC3A2F", colorLight:"#FDEEED", competitor:"Rep.com", dealStage:"Active RFP", closeTarget:"ASAP", engagementScore:4, contacts:{total:13,liValidated:2,working:1,converted:1,keyContacts:["Dominica Tallarico (Working)","Britt-Ann Brandt (Converted)"]}, nextAction:{text:"URGENT: Jordan direct email to RFP buying committee. ABM activate Demandbase + LinkedIn to all 13 contacts.",owner:"Jordan + ABM",dueDate:"TODAY"}, outreachDraft:{channel:"Direct Email (from Jordan)",sender:"Jordan",body:"Hi [First Name],\n\nAs you work through your platform evaluation, I wanted to make sure you have a clear picture of who would be supporting Advocate Health from day one with Birdeye.\n\n[Attach team slide — CSM, implementation lead, enterprise support contacts]\n\nThe team that wins your business is the team that serves it. Happy to walk through our enterprise onboarding and introduce the people who'd be in your corner.\n\nCan we find 30 minutes this week?"} },
-  { id:"moneygram", name:"MoneyGram", shortName:"MoneyGram", ae:"Derek", color:"#0A8A8A", colorLight:"#E6F6F6", competitor:"None (POCs churned)", dealStage:"Re-Engage", closeTarget:"Q2–Q3 2026", engagementScore:2, contacts:{total:14,liValidated:5,working:0,converted:1,keyContacts:["Doug Klees (LI validated)","Jeffrey Gorsuch (LI validated)","Juan Agualimpia (LI validated)"]}, nextAction:{text:"Derek to map CFO Marc Winniford + CEO Anthony Soohoo on LinkedIn. ABM Demandbase display + email new exec contacts.",owner:"Derek + ABM",dueDate:"Mar 22"}, outreachDraft:{channel:"LinkedIn (Derek — to new C-suite)",sender:"Derek",body:"Hi [First Name],\n\nCongrats on joining MoneyGram — exciting time to be building at a global fintech platform at that scale.\n\nBirdeye works with financial services networks to manage customer experience and local visibility across hundreds of thousands of agent locations. With 470,000+ locations globally, the scale challenge MoneyGram faces is one we know well.\n\nWould a brief intro call make sense?"} },
-  { id:"drhorton", name:"DR Horton", shortName:"DR Horton", ae:"Derek", color:"#2E7D32", colorLight:"#E8F5E9", competitor:"ChatMeter", dealStage:"Early Outreach", closeTarget:"Q3 2026", engagementScore:3, contacts:{total:37,liValidated:16,working:0,converted:2,keyContacts:["Michael Murray (LI validated)","Nicolle Cordell-Evans (LI validated)","Nikki Paulsen (LI validated)"]}, nextAction:{text:"Derek to use reputation protection angle as entry hook vs ChatMeter scale argument.",owner:"Derek + ABM",dueDate:"Apr 1"}, outreachDraft:{channel:"LinkedIn (Derek — to marketing team)",sender:"Derek",body:"Hi [First Name],\n\nWith DR Horton opening communities across the country at pace, getting every new community to strong reviews and local visibility from opening day is a real operational challenge.\n\nBirdeye manages that for homebuilders at scale — reviews, listings, and AI search across every community, from day one.\n\nHappy to show you how it works. Worth 20 minutes?"} },
-  { id:"fiveguys", name:"Five Guys", shortName:"Five Guys", ae:"April Ngo", color:"#C62828", colorLight:"#FFEBEE", competitor:"Yext", dealStage:"Re-Engage", closeTarget:"Q2 2026", engagementScore:4, contacts:{total:29,liValidated:22,working:1,converted:0,keyContacts:["Jack Goodson (Working — LI validated)"]}, nextAction:{text:"April to send free AI visibility scan for top 10 markets showing Yext gap on ChatGPT/Perplexity.",owner:"April Ngo + ABM",dueDate:"Mar 22"}, outreachDraft:{channel:"LinkedIn (April — to Jack Goodson)",sender:"April Ngo",body:"Hi Jack,\n\nQuick one — we ran an AI search visibility scan on Five Guys across your top 10 markets and the results are worth seeing. Specifically how your locations are showing up (or not) on ChatGPT and Perplexity vs competitors.\n\nHappy to share the full scan. Would that be useful?"} },
-  { id:"adventist", name:"Adventist Health", shortName:"Adventist Health", ae:"Rich", color:"#1565C0", colorLight:"#E3F2FD", competitor:"Yext (prior)", dealStage:"Re-Engage", closeTarget:"Q2 2026", engagementScore:3, contacts:{total:49,liValidated:26,working:0,converted:0,keyContacts:["Mara Bryant (LI validated)","Patricia Stone (LI validated)","Karen Hansberger (LI validated)"]}, nextAction:{text:"Rich to use Yext POC connection. NEW: Sebrena Sawtell named VP Marketing Mar 2026 — fresh entry point this week.",owner:"Rich + ABM",dueDate:"Mar 20"}, outreachDraft:{channel:"LinkedIn (Rich — personal re-engagement)",sender:"Rich",body:"Hi [Name],\n\nHope you're doing well through all the changes at Adventist Health. I've been following the news and wanted to reach out personally.\n\nI'm now at Birdeye and working with a number of health systems on patient experience and local visibility — and given what you're navigating, I think the conversation could be really timely.\n\nWould love to reconnect. Do you have 20 minutes in the next couple of weeks?"} },
-  { id:"cedars", name:"Cedars-Sinai", shortName:"Cedars-Sinai", ae:"Rich", color:"#00695C", colorLight:"#E0F2F1", competitor:"Yext (Search — existing)", dealStage:"Upsell Target", closeTarget:"Q2 2026", engagementScore:3, contacts:{total:69,liValidated:7,working:1,converted:0,keyContacts:["Carrie Yutzy (Working — LI validated)"]}, nextAction:{text:"Rich to pitch ORM + Surveys to Carrie Yutzy — bridge from Search relationship.",owner:"Rich + ABM",dueDate:"Mar 28"}, outreachDraft:{channel:"Email (Rich to Carrie Yutzy)",sender:"Rich",body:"Hi Carrie,\n\nReally glad how the Search AI piece has come together for Cedars-Sinai.\n\nI wanted to share something a few of our health system customers have added as a natural next step — reputation and survey management in the same platform. You're already managing how patients find you; this closes the loop on what they say once they do.\n\nWould it make sense to include your ORM team in a quick demo?"} },
-  { id:"ccm", name:"CrossCountry Mortgage", shortName:"CrossCountry", ae:"Brian Bulkley", color:"#AD1457", colorLight:"#FCE4EC", competitor:"None confirmed", dealStage:"Active Evaluation", closeTarget:"June 2026", engagementScore:4, contacts:{total:73,liValidated:15,working:0,converted:2,keyContacts:["Beth Keckley (LI validated)","Ryan Brown (Nurture Emails)"]}, nextAction:{text:"Brian to accelerate close — LO-level reputation management + compliance angle before June.",owner:"Brian Bulkley + ABM",dueDate:"Apr 15"}, outreachDraft:{channel:"Direct Email (Brian Bulkley)",sender:"Brian Bulkley",body:"Hi [First Name],\n\nAs CCM continues to grow its LO footprint, managing reputation and visibility at the loan officer level becomes a real operational challenge — and increasingly a compliance consideration too.\n\nBirdeye manages LO-level reviews, listings, and local presence at scale, with compliance workflows built for mortgage. Happy to walk through what that looks like for a lender at your size.\n\nCan we find 30 minutes before end of April?"} },
-  { id:"willowbridge", name:"Willow Bridge Property", shortName:"Willow Bridge", ae:"Michael Tarter", color:"#4527A0", colorLight:"#EDE7F6", competitor:"SOCI (prior)", dealStage:"Re-Engage Q2", closeTarget:"Q2 2026", engagementScore:3, contacts:{total:97,liValidated:46,working:0,converted:0,keyContacts:["Jaye Hughes (LI validated)","Michelle Rodriguez (LI validated)","Brandi Vinson (LI validated)"]}, nextAction:{text:"Michael to lead with lease-up angle for DC/Miami/TX/Chicago communities. Reference Chris Burns NAA Chair.",owner:"Michael Tarter + ABM",dueDate:"Apr 1"}, outreachDraft:{channel:"LinkedIn (Michael Tarter)",sender:"Michael Tarter",body:"Hi [First Name],\n\nWith Willow Bridge continuing to grow its portfolio, the lease-up phase for new communities is where reputation strategy matters most — getting to 4.5 stars before the first resident signs.\n\nBirdeye works with top NMHC operators to manage reviews, resident feedback, and local visibility across every community. Happy to share what that looks like at your scale.\n\nWould a quick conversation make sense this quarter?"} },
-  { id:"tjx", name:"TJX Companies", shortName:"TJX Companies", ae:"Michael Tarter", color:"#E65100", colorLight:"#FBE9E7", competitor:"Unknown (lost survey RFP)", dealStage:"Re-Engage", closeTarget:"Q2–Q3 2026", engagementScore:2, contacts:{total:0,liValidated:0,working:0,converted:0,keyContacts:["CMO (via founder connection)","Head of Consumer Insights (via founder connection)"]}, nextAction:{text:"Michael to re-engage CMO + Consumer Insights post-Q4 earnings with AI survey summaries story.",owner:"Michael Tarter + ABM",dueDate:"Mar 31"}, outreachDraft:{channel:"Email (Michael Tarter — via founder connection)",sender:"Michael Tarter",body:"Hi [First Name],\n\nCongrats on a strong Q4 — the results speak for themselves.\n\nI've been thinking about the survey conversation we had previously and wanted to revisit it with a different angle. At 4,900+ stores, the only way to make sense of location-level customer feedback is AI — and that's exactly what Birdeye's survey summaries do.\n\nWould you be open to a quick look? I think it lands differently now than it did before."} }
+  { id:"multicare", name:"MultiCare Health System", shortName:"MultiCare", ae:"Brian J", color:"#7C4DCC", colorLight:"#F3EEFB", competitor:"Press Ganey", dealStage:"Pre-Engagement", closeTarget:"Q2-Q3 2026", engagementScore:3, contacts:{total:23,liValidated:9,working:1,converted:0,keyContacts:["Karla Sclater (Working)","Aaron Cohen (CGO - new hire)"]}, nextAction:{text:"Target Aaron Cohen (CGO) on LinkedIn with platform unification + AI search messaging.",owner:"ABM + Brian J",dueDate:"Mar 28"}, outreachDraft:{channel:"LinkedIn InMail (from Brian J)",sender:"Brian J",body:"Hi Aaron,\n\nCongrats on the CGO appointment - exciting role with the growth agenda at MultiCare.\n\nOne thing that comes up consistently for health systems at your scale is keeping patient-facing presence consistent as the system grows.\n\nWe work with health systems at exactly this inflection point. Happy to share how others have approached it.\n\nWorth 20 minutes?"} },
+  { id:"fullspeed", name:"FullSpeed Automotive", shortName:"FullSpeed Auto", ae:"Brian Bulkley", color:"#C07A00", colorLight:"#FDF6E7", competitor:"None identified", dealStage:"Early Outreach", closeTarget:"Q2 2026", engagementScore:3, contacts:{total:12,liValidated:9,working:3,converted:0,keyContacts:["Stacey Pool (CMO - Working)","Vanessa Allen (Working)","Bethany Kaufman (Working)"]}, nextAction:{text:"Send Stacey Pool Sun Auto Tire case study via LinkedIn.",owner:"Brian Bulkley + ABM",dueDate:"Mar 20"}, outreachDraft:{channel:"LinkedIn Message (from Brian Bulkley)",sender:"Brian Bulkley",body:"Hi Stacey,\n\nCongrats on the CMO role at FullSpeed - exciting time with the franchise growth momentum you're building.\n\nOne of our customers, Sun Auto Tire, faced a similar challenge managing customer experience and local visibility across a rapidly expanding multi-brand footprint. Happy to share what they figured out.\n\nWould a quick call make sense?"} },
+  { id:"advocate", name:"Advocate Health", shortName:"Advocate Health", ae:"Jordan", color:"#CC3A2F", colorLight:"#FDEEED", competitor:"Rep.com", dealStage:"Active RFP", closeTarget:"ASAP", engagementScore:4, contacts:{total:13,liValidated:2,working:1,converted:1,keyContacts:["Dominica Tallarico (Working)","Britt-Ann Brandt (Converted)"]}, nextAction:{text:"URGENT: Jordan direct email to RFP buying committee. ABM activate Demandbase + LinkedIn to all 13 contacts.",owner:"Jordan + ABM",dueDate:"TODAY"}, outreachDraft:{channel:"Direct Email (from Jordan)",sender:"Jordan",body:"Hi [First Name],\n\nAs you work through your platform evaluation, I wanted to make sure you have a clear picture of who would be supporting Advocate Health from day one with Birdeye.\n\nThe team that wins your business is the team that serves it. Happy to walk through our enterprise onboarding and introduce the people who'd be in your corner.\n\nCan we find 30 minutes this week?"} },
+  { id:"moneygram", name:"MoneyGram", shortName:"MoneyGram", ae:"Derek", color:"#0A8A8A", colorLight:"#E6F6F6", competitor:"None (POCs churned)", dealStage:"Re-Engage", closeTarget:"Q2-Q3 2026", engagementScore:2, contacts:{total:14,liValidated:5,working:0,converted:1,keyContacts:["Doug Klees (LI validated)","Jeffrey Gorsuch (LI validated)","Juan Agualimpia (LI validated)"]}, nextAction:{text:"Derek to map CFO Marc Winniford + CEO Anthony Soohoo on LinkedIn.",owner:"Derek + ABM",dueDate:"Mar 22"}, outreachDraft:{channel:"LinkedIn (Derek - to new C-suite)",sender:"Derek",body:"Hi [First Name],\n\nCongrats on joining MoneyGram - exciting time to be building at a global fintech platform at that scale.\n\nBirdeye works with financial services networks to manage customer experience and local visibility across hundreds of thousands of agent locations.\n\nWould a brief intro call make sense?"} },
+  { id:"drhorton", name:"DR Horton", shortName:"DR Horton", ae:"Derek", color:"#2E7D32", colorLight:"#E8F5E9", competitor:"ChatMeter", dealStage:"Early Outreach", closeTarget:"Q3 2026", engagementScore:3, contacts:{total:37,liValidated:16,working:0,converted:2,keyContacts:["Michael Murray (LI validated)","Nicolle Cordell-Evans (LI validated)","Nikki Paulsen (LI validated)"]}, nextAction:{text:"Derek to use reputation protection angle as entry hook vs ChatMeter scale argument.",owner:"Derek + ABM",dueDate:"Apr 1"}, outreachDraft:{channel:"LinkedIn (Derek - to marketing team)",sender:"Derek",body:"Hi [First Name],\n\nWith DR Horton opening communities across the country at pace, getting every new community to strong reviews and local visibility from opening day is a real operational challenge.\n\nBirdeye manages that for homebuilders at scale - reviews, listings, and AI search across every community, from day one.\n\nHappy to show you how it works. Worth 20 minutes?"} },
+  { id:"fiveguys", name:"Five Guys", shortName:"Five Guys", ae:"April Ngo", color:"#C62828", colorLight:"#FFEBEE", competitor:"Yext", dealStage:"Re-Engage", closeTarget:"Q2 2026", engagementScore:4, contacts:{total:29,liValidated:22,working:1,converted:0,keyContacts:["Jack Goodson (Working - LI validated)"]}, nextAction:{text:"April to send free AI visibility scan for top 10 markets showing Yext gap on ChatGPT/Perplexity.",owner:"April Ngo + ABM",dueDate:"Mar 22"}, outreachDraft:{channel:"LinkedIn (April - to Jack Goodson)",sender:"April Ngo",body:"Hi Jack,\n\nQuick one - we ran an AI search visibility scan on Five Guys across your top 10 markets and the results are worth seeing. Specifically how your locations are showing up on ChatGPT and Perplexity.\n\nHappy to share the full scan. Would that be useful?"} },
+  { id:"adventist", name:"Adventist Health", shortName:"Adventist Health", ae:"Rich", color:"#1565C0", colorLight:"#E3F2FD", competitor:"Yext (prior)", dealStage:"Re-Engage", closeTarget:"Q2 2026", engagementScore:3, contacts:{total:49,liValidated:26,working:0,converted:0,keyContacts:["Mara Bryant (LI validated)","Patricia Stone (LI validated)","Karen Hansberger (LI validated)"]}, nextAction:{text:"Rich to use Yext POC connection. NEW: Sebrena Sawtell named VP Marketing Mar 2026 - fresh entry point this week.",owner:"Rich + ABM",dueDate:"Mar 20"}, outreachDraft:{channel:"LinkedIn (Rich - personal re-engagement)",sender:"Rich",body:"Hi [Name],\n\nHope you're doing well through all the changes at Adventist Health. I've been following the news and wanted to reach out personally.\n\nI'm now at Birdeye and working with a number of health systems on patient experience and local visibility - and given what you're navigating, I think the conversation could be really timely.\n\nWould love to reconnect. Do you have 20 minutes in the next couple of weeks?"} },
+  { id:"cedars", name:"Cedars-Sinai", shortName:"Cedars-Sinai", ae:"Rich", color:"#00695C", colorLight:"#E0F2F1", competitor:"Yext (Search - existing)", dealStage:"Upsell Target", closeTarget:"Q2 2026", engagementScore:3, contacts:{total:69,liValidated:7,working:1,converted:0,keyContacts:["Carrie Yutzy (Working - LI validated)"]}, nextAction:{text:"Rich to pitch ORM + Surveys to Carrie Yutzy - bridge from Search relationship.",owner:"Rich + ABM",dueDate:"Mar 28"}, outreachDraft:{channel:"Email (Rich to Carrie Yutzy)",sender:"Rich",body:"Hi Carrie,\n\nReally glad how the Search AI piece has come together for Cedars-Sinai.\n\nI wanted to share something a few of our health system customers have added as a natural next step - reputation and survey management in the same platform. You're already managing how patients find you; this closes the loop on what they say once they do.\n\nWould it make sense to include your ORM team in a quick demo?"} },
+  { id:"ccm", name:"CrossCountry Mortgage", shortName:"CrossCountry", ae:"Brian Bulkley", color:"#AD1457", colorLight:"#FCE4EC", competitor:"None confirmed", dealStage:"Active Evaluation", closeTarget:"June 2026", engagementScore:4, contacts:{total:73,liValidated:15,working:0,converted:2,keyContacts:["Beth Keckley (LI validated)","Ryan Brown (Nurture Emails)"]}, nextAction:{text:"Brian to accelerate close - LO-level reputation management + compliance angle before June.",owner:"Brian Bulkley + ABM",dueDate:"Apr 15"}, outreachDraft:{channel:"Direct Email (Brian Bulkley)",sender:"Brian Bulkley",body:"Hi [First Name],\n\nAs CCM continues to grow its LO footprint, managing reputation and visibility at the loan officer level becomes a real operational challenge - and increasingly a compliance consideration too.\n\nBirdeye manages LO-level reviews, listings, and local presence at scale, with compliance workflows built for mortgage.\n\nCan we find 30 minutes before end of April?"} },
+  { id:"willowbridge", name:"Willow Bridge Property", shortName:"Willow Bridge", ae:"Michael Tarter", color:"#4527A0", colorLight:"#EDE7F6", competitor:"SOCI (prior)", dealStage:"Re-Engage Q2", closeTarget:"Q2 2026", engagementScore:3, contacts:{total:97,liValidated:46,working:0,converted:0,keyContacts:["Jaye Hughes (LI validated)","Michelle Rodriguez (LI validated)","Brandi Vinson (LI validated)"]}, nextAction:{text:"Michael to lead with lease-up angle for DC/Miami/TX/Chicago communities.",owner:"Michael Tarter + ABM",dueDate:"Apr 1"}, outreachDraft:{channel:"LinkedIn (Michael Tarter)",sender:"Michael Tarter",body:"Hi [First Name],\n\nWith Willow Bridge continuing to grow its portfolio, the lease-up phase for new communities is where reputation strategy matters most - getting to 4.5 stars before the first resident signs.\n\nBirdeye works with top NMHC operators to manage reviews, resident feedback, and local visibility across every community.\n\nWould a quick conversation make sense this quarter?"} },
+  { id:"tjx", name:"TJX Companies", shortName:"TJX Companies", ae:"Michael Tarter", color:"#E65100", colorLight:"#FBE9E7", competitor:"Unknown (lost survey RFP)", dealStage:"Re-Engage", closeTarget:"Q2-Q3 2026", engagementScore:2, contacts:{total:0,liValidated:0,working:0,converted:0,keyContacts:["CMO (via founder connection)","Head of Consumer Insights (via founder connection)"]}, nextAction:{text:"Michael to re-engage CMO + Consumer Insights post-Q4 earnings with AI survey summaries story.",owner:"Michael Tarter + ABM",dueDate:"Mar 31"}, outreachDraft:{channel:"Email (Michael Tarter - via founder connection)",sender:"Michael Tarter",body:"Hi [First Name],\n\nCongrats on a strong Q4 - the results speak for themselves.\n\nI've been thinking about the survey conversation we had previously and wanted to revisit it with a different angle. At 4,900+ stores, the only way to make sense of location-level customer feedback is AI - and that's exactly what Birdeye's survey summaries do.\n\nWould you be open to a quick look?"} }
 ];
 
 const URGENCY = {
@@ -208,8 +208,8 @@ function saveApiKey() {
 
 function updateApiStatus() {
   const el = document.getElementById("api-status");
-  if (apiKey && apiKey.startsWith("sk-ant-")) { el.textContent = "✓ Key saved"; el.className = "ok"; }
-  else if (apiKey) { el.textContent = "⚠ Check key format"; el.className = ""; }
+  if (apiKey && apiKey.startsWith("sk-ant-")) { el.textContent = "Key saved"; el.className = "ok"; }
+  else if (apiKey) { el.textContent = "Check key format"; el.className = ""; }
   else { el.textContent = "Not set"; el.className = ""; }
 }
 
@@ -218,9 +218,9 @@ async function fetchAccountNews(account) {
   loadingSet.add(account.id);
   renderSidebar(); renderMain();
 
-  const systemPrompt = `You are a B2B sales intelligence analyst for Birdeye, an AI-powered reputation and customer experience platform for multi-location businesses. Surface concise, actionable news signals for enterprise sales teams. RULES: Return ONLY valid JSON, no markdown, no preamble, no code fences. Each signal must be genuinely newsworthy and recent (prioritize 2026, then late 2025). Urgency: "ACT NOW" = new leadership hire, active procurement, major expansion; "WATCH" = growth signal, tech investment; "FYI" = background context. Never mention mergers, acquisitions, or M&A in the play or adAngle fields. Never mention competitor names in adAngle. Keep headlines under 12 words.`;
+  const systemPrompt = `You are a B2B sales intelligence analyst for Birdeye, an AI-powered reputation and customer experience platform for multi-location businesses. Based on your training knowledge, surface the most relevant and recent signals about the given company for an enterprise sales team. RULES: Return ONLY valid JSON, no markdown, no preamble, no code fences. Urgency: "ACT NOW" = new leadership hire, active procurement, major expansion announced; "WATCH" = growth signal, tech investment, structural change; "FYI" = useful background context. Never mention mergers, acquisitions, or M&A in the play or adAngle fields - those are AE intel only. Never mention competitor names in adAngle - must be safe for Demandbase display ads. Keep headlines under 12 words.`;
 
-  const userPrompt = `Search for the latest news about "${account.name}" relevant to selling customer experience and reputation management software. Context: competitor they use is ${account.competitor}, deal stage is ${account.dealStage}. Return ONLY this JSON (no other text): {"signals":[{"urgency":"ACT NOW|WATCH|FYI","type":"string","headline":"string under 12 words","date":"string","source":"string","detail":"string","whyMatters":"string","play":"string","adAngle":"string"}],"lastRefreshed":"${new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}","summary":"string one sentence"} Return 2-3 signals.`;
+  const userPrompt = `Based on your knowledge up to early 2026, provide the most relevant recent signals about "${account.name}" for a sales team selling customer experience and reputation management software. Context: they currently use ${account.competitor}, deal stage is ${account.dealStage}. Return ONLY this exact JSON structure with no other text: {"signals":[{"urgency":"ACT NOW or WATCH or FYI","type":"string","headline":"string under 12 words","date":"string","source":"string","detail":"1-2 sentences","whyMatters":"1-2 sentences why this matters for Birdeye","play":"specific recommended AE action","adAngle":"safe display ad angle, no competitor names, no M&A"}],"lastRefreshed":"${new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}","summary":"one sentence top-line for this account"} Return 2-3 signals.`;
 
   try {
     const res = await fetch("https://corsproxy.io/?url=https://api.anthropic.com/v1/messages", {
@@ -233,8 +233,7 @@ async function fetchAccountNews(account) {
       },
       body: JSON.stringify({
         model: "claude-sonnet-4-20250514",
-        max_tokens: 1000,
-        tools: [{ type: "web_search_20250305", name: "web_search" }],
+        max_tokens: 1200,
         system: systemPrompt,
         messages: [{ role: "user", content: userPrompt }]
       })
@@ -246,7 +245,7 @@ async function fetchAccountNews(account) {
     if (!match) throw new Error("No JSON in response");
     newsMap[account.id] = JSON.parse(match[0]);
   } catch(e) {
-    newsMap[account.id] = { signals:[{urgency:"FYI",type:"Error",headline:"Could not fetch news — try again",date:"Now",detail:e.message,whyMatters:"",play:"",adAngle:""}], summary:"Fetch failed", lastRefreshed:"—" };
+    newsMap[account.id] = { signals:[{urgency:"FYI",type:"Error",headline:"Could not fetch - try again",date:"Now",detail:e.message,whyMatters:"",play:"",adAngle:""}], summary:"Fetch failed", lastRefreshed:"--" };
   }
 
   loadingSet.delete(account.id);
@@ -256,10 +255,10 @@ async function fetchAccountNews(account) {
 async function refreshAll() {
   if (!apiKey) { alert("Please enter your Anthropic API key first."); return; }
   const btn = document.getElementById("btn-refresh-all");
-  btn.disabled = true; btn.textContent = "⟳ Fetching news...";
+  btn.disabled = true; btn.textContent = "Fetching news...";
   await Promise.all(ACCOUNTS.map(a => fetchAccountNews(a)));
   document.getElementById("last-refresh-label").textContent = `12 accounts · Updated ${new Date().toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})}`;
-  btn.disabled = false; btn.textContent = "⟳ Refresh All News";
+  btn.disabled = false; btn.textContent = "Refresh All News";
 }
 
 function renderSidebar() {
@@ -270,7 +269,7 @@ function renderSidebar() {
     const sc = STAGE_COLORS[a.dealStage] || STAGE_COLORS["Pre-Engagement"];
     const isActive = selectedId === a.id && !showPriority;
     return `<button class="acct-row${isActive?" active":""}" style="--color:${a.color};--color-light:${a.colorLight}" onclick="selectAccount('${a.id}')">
-      <div class="name">${a.shortName}<span>${loading?'<span class="acct-loading">⟳</span>':actNow>0?`<span class="acct-badge">${actNow}</span>`:""}</span></div>
+      <div class="name">${a.shortName}<span>${loading?'<span class="acct-loading">o</span>':actNow>0?`<span class="acct-badge">${actNow}</span>`:""}</span></div>
       <div class="meta"><span class="ae-name">${a.ae}</span><span style="font-size:10px;color:#CBD5E1">·</span><span class="stage-pill" style="background:${sc.bg};color:${sc.text}">${a.dealStage}</span></div>
     </button>`;
   }).join("");
@@ -313,13 +312,13 @@ function setTab(tab) {
 
 function renderPriorityView() {
   const all = ACCOUNTS.flatMap(a=>(newsMap[a.id]?.signals||[]).filter(s=>s.urgency==="ACT NOW").map(s=>({...s,account:a})));
-  document.getElementById("priority-view").innerHTML = `<h2>⚡ High Priority Signals</h2><p class="sub">${all.length} ACT NOW signal${all.length!==1?"s":""} across all accounts</p>`+
-    (all.length===0?`<div class="no-signals"><div class="icon">⟳</div><div>Hit "Refresh All News" to load live signals</div></div>`:
+  document.getElementById("priority-view").innerHTML = `<h2>High Priority Signals</h2><p class="sub">${all.length} ACT NOW signal${all.length!==1?"s":""} across all accounts</p>`+
+    (all.length===0?`<div class="no-signals"><div class="icon">o</div><div>Hit Refresh All News to load live signals</div></div>`:
     all.map(s=>`<div class="priority-card" onclick="selectAccount('${s.account.id}')">
       <div class="pc-top"><span class="pc-acct" style="color:${s.account.color}">${s.account.name}</span><span class="pc-ae">AE: ${s.account.ae}</span></div>
       ${urgencyBadgeHTML("ACT NOW")}
       <div class="pc-headline">${s.headline}</div>
-      ${s.play?`<div class="pc-play">→ ${s.play}</div>`:""}
+      ${s.play?`<div class="pc-play">-> ${s.play}</div>`:""}
     </div>`).join(""));
 }
 
@@ -341,10 +340,10 @@ function renderAccountDetail() {
         </div>
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
           <div class="eng-dots">${[1,2,3,4,5].map(i=>`<div class="eng-dot" style="background:${i<=a.engagementScore?"#22C55E":"#E2E8F0"}"></div>`).join("")}</div>
-          <button id="btn-refresh-one" onclick="fetchAccountNews(ACCOUNTS.find(x=>x.id==='${a.id}'))">${loadingSet.has(a.id)?"Fetching...":"↻ Refresh"}</button>
+          <button id="btn-refresh-one" onclick="fetchAccountNews(ACCOUNTS.find(x=>x.id==='${a.id}'))">${loadingSet.has(a.id)?"Fetching...":"Refresh"}</button>
         </div>
       </div>
-      <div id="next-action-bar"><strong>Next Action</strong><span class="na-text">${a.nextAction.text}</span><span class="na-meta">→ ${a.nextAction.owner} · Due: ${a.nextAction.dueDate}</span></div>
+      <div id="next-action-bar"><strong>Next Action</strong><span class="na-text">${a.nextAction.text}</span><span class="na-meta">-> ${a.nextAction.owner} · Due: ${a.nextAction.dueDate}</span></div>
       <div class="tabs" style="--acct-color:${a.color}">
         ${["signals","contacts","outreach"].map(t=>`<button class="tab-btn${activeTab===t?" active":""}" data-tab="${t}" onclick="setTab('${t}')">${t}</button>`).join("")}
       </div>
@@ -356,8 +355,8 @@ function renderTabContent() {
   const a = ACCOUNTS.find(x=>x.id===selectedId);
   const news = newsMap[a.id];
   if (activeTab==="signals") {
-    if (loadingSet.has(a.id)) return `<div class="loading-state"><div class="spin">⟳</div><div>Fetching latest news for ${a.shortName}...</div></div>`;
-    if (!news) return `<div class="loading-state"><div style="font-size:28px;margin-bottom:10px">📰</div><div style="margin-bottom:14px">No news loaded yet</div><button class="fetch-btn" style="background:${a.color}" onclick="fetchAccountNews(ACCOUNTS.find(x=>x.id==='${a.id}'))">Fetch News Now</button></div>`;
+    if (loadingSet.has(a.id)) return `<div class="loading-state"><div class="spin">o</div><div>Fetching signals for ${a.shortName}...</div></div>`;
+    if (!news) return `<div class="loading-state"><div style="font-size:28px;margin-bottom:10px">📰</div><div style="margin-bottom:14px">No signals loaded yet</div><button class="fetch-btn" style="background:${a.color}" onclick="fetchAccountNews(ACCOUNTS.find(x=>x.id==='${a.id}'))">Fetch Now</button></div>`;
     return `<div style="font-size:11px;color:#94A3B8;margin-bottom:12px">Last updated: ${news.lastRefreshed||"just now"}</div>`+news.signals.map((s,i)=>signalCardHTML(s,i)).join("");
   }
   if (activeTab==="contacts") {
@@ -368,7 +367,7 @@ function renderTabContent() {
   if (activeTab==="outreach") {
     const d = a.outreachDraft;
     return `<div class="outreach-panel">
-      <button class="outreach-toggle" onclick="toggleOutreach(this)"><span>✉ AE-Ready Outreach — ${d.channel}</span><span>▼ expand</span></button>
+      <button class="outreach-toggle" onclick="toggleOutreach(this)"><span>AE-Ready Outreach - ${d.channel}</span><span>expand</span></button>
       <div class="outreach-body" style="display:none"><div class="outreach-from">From: ${d.sender}</div><div class="outreach-text">${d.body}</div><button class="copy-btn" onclick="copyOutreach(this,'${a.id}')">Copy</button></div>
     </div>`;
   }
@@ -378,12 +377,12 @@ function toggleOutreach(btn) {
   const body = btn.nextElementSibling;
   const isOpen = body.style.display !== "none";
   body.style.display = isOpen ? "none" : "block";
-  btn.querySelector("span:last-child").textContent = isOpen ? "▼ expand" : "▲ collapse";
+  btn.querySelector("span:last-child").textContent = isOpen ? "expand" : "collapse";
 }
 
 function copyOutreach(btn, id) {
   const a = ACCOUNTS.find(x=>x.id===id);
-  navigator.clipboard.writeText(a.outreachDraft.body).then(()=>{ btn.textContent="✓ Copied!"; btn.classList.add("copied"); setTimeout(()=>{ btn.textContent="Copy"; btn.classList.remove("copied"); },2000); });
+  navigator.clipboard.writeText(a.outreachDraft.body).then(()=>{ btn.textContent="Copied!"; btn.classList.add("copied"); setTimeout(()=>{ btn.textContent="Copy"; btn.classList.remove("copied"); },2000); });
 }
 
 function signalCardHTML(s, idx) {
@@ -394,13 +393,13 @@ function signalCardHTML(s, idx) {
         <div class="signal-meta">${urgencyBadgeHTML(s.urgency)}<span class="signal-type">${s.type||""}</span>${s.date?`<span class="signal-date">· ${s.date}</span>`:""} ${s.source?`<span class="signal-source">via ${s.source}</span>`:""}</div>
         <div class="signal-headline">${s.headline}</div>
       </div>
-      <button class="toggle-btn" onclick="toggleSignal('${id}')">▼</button>
+      <button class="toggle-btn" onclick="toggleSignal('${id}')">+</button>
     </div>
     <div id="${id}" class="signal-expanded" style="display:none">
       ${s.detail?`<p class="signal-detail">${s.detail}</p>`:""}
       ${s.whyMatters?`<div class="signal-block block-green"><strong>Why It Matters</strong>${s.whyMatters}</div>`:""}
       ${s.play?`<div class="signal-block block-blue"><strong>The Play</strong>${s.play}</div>`:""}
-      ${s.adAngle?`<div class="signal-block block-purple"><strong>Ad Angle (Demandbase)</strong>${s.adAngle}</div>`:""}
+      ${s.adAngle?`<div class="signal-block block-purple"><strong>Ad Angle</strong>${s.adAngle}</div>`:""}
     </div>
   </div>`;
 }
@@ -410,7 +409,7 @@ function toggleSignal(id) {
   const btn = el.previousElementSibling.querySelector(".toggle-btn");
   const open = el.style.display !== "none";
   el.style.display = open ? "none" : "block";
-  btn.textContent = open ? "▼" : "▲";
+  btn.textContent = open ? "+" : "-";
 }
 
 function urgencyBadgeHTML(u) {
