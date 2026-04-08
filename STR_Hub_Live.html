@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Birdeye STR Account Hub</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #F8FAFC; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+
+    /* API Key Banner */
+    #api-banner { background: #1E293B; color: #E2E8F0; padding: 10px 20px; display: flex; align-items: center; gap: 12px; flex-shrink: 0; font-size: 13px; }
+    #api-banner input { flex: 1; max-width: 380px; padding: 6px 12px; border-radius: 6px; border: 1px solid #475569; background: #0F172A; color: #F1F5F9; font-size: 13px; font-family: monospace; }
+    #api-banner button { padding: 6px 16px; background: #3B82F6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; }
+    #api-banner button:hover { background: #2563EB; }
+    #api-status { font-size: 12px; color: #94A3B8; }
+    #api-status.ok { color: #4ADE80; }
+
+    /* Layout */
+    #app { display: flex; flex: 1; overflow: hidden; }
+
+    /* Sidebar */
+    #sidebar { width: 256px; flex-shrink: 0; background: white; border-right: 1px solid #E2E8F0; display: flex; flex-direction: column; overflow: hidden; }
+    #sidebar-header { padding: 16px 16px 12px; border-bottom: 1px solid #F1F5F9; }
+    #sidebar-header .label { font-size: 10px; font-weight: 700; color: #94A3B8; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2px; }
+    #sidebar-header h1 { font-size: 16px; font-weight: 700; color: #0F172A; }
+    #sidebar-header .sub { font-size: 11px; color: #94A3B8; margin-top: 2px; }
+    #sidebar-actions { padding: 10px 10px 4px; }
+    #btn-refresh-all { width: 100%; padding: 9px 12px; border-radius: 8px; border: none; cursor: pointer; background: #0F172A; color: white; font-weight: 600; font-size: 13px; transition: all 0.2s; }
+    #btn-refresh-all:disabled { background: #F1F5F9; color: #94A3B8; cursor: not-allowed; }
+    #btn-refresh-all:not(:disabled):hover { background: #1E293B; }
+    #priority-btn-wrap { padding: 6px 10px 4px; }
+    #btn-priority { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-radius: 8px; border: none; cursor: pointer; background: transparent; color: #475569; font-weight: 600; font-size: 13px; }
+    #btn-priority.active { background: #FEF2F2; color: #991B1B; }
+    #priority-badge { background: #EF4444; color: white; font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 999px; }
+    #accounts-label { padding: 8px 16px 4px; font-size: 10px; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.08em; }
+    #account-list { flex: 1; overflow-y: auto; padding: 0 6px 12px; }
+    .acct-row { width: 100%; text-align: left; padding: 9px 12px; margin: 1px 0; border-radius: 8px; border: none; border-left: 3px solid transparent; cursor: pointer; background: transparent; transition: all 0.15s; display: block; }
+    .acct-row:hover { background: #F8FAFC; }
+    .acct-row.active { border-left-color: var(--color); background: var(--color-light); }
+    .acct-row .name { font-size: 13px; font-weight: 500; color: #334155; display: flex; justify-content: space-between; align-items: center; }
+    .acct-row.active .name { font-weight: 600; color: var(--color); }
+    .acct-row .meta { display: flex; align-items: center; gap: 6px; margin-top: 2px; }
+    .acct-row .ae-name { font-size: 11px; color: #94A3B8; }
+    .stage-pill { font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 4px; }
+    .acct-badge { background: #EF4444; color: white; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 999px; }
+    .acct-loading { font-size: 11px; color: #94A3B8; animation: spin 1s linear infinite; display: inline-block; }
+    #legend { padding: 12px 16px; border-top: 1px solid #F1F5F9; }
+    #legend .legend-title { font-size: 10px; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+    .legend-item { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .legend-item span { font-size: 11px; color: #64748B; }
+
+    /* Main panel */
+    #main { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+    #empty-state { flex: 1; display: flex; align-items: center; justify-content: center; flex-direction: column; color: #CBD5E1; }
+    #empty-state .arrow { font-size: 48px; margin-bottom: 12px; }
+    #empty-state p { font-size: 14px; color: #94A3B8; margin-bottom: 20px; }
+    #empty-state button { padding: 10px 24px; background: #0F172A; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; }
+
+    /* Account detail */
+    #acct-detail { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+    #acct-header { padding: 20px 28px 0; border-bottom: 1px solid #F1F5F9; background: white; flex-shrink: 0; }
+    #acct-title-row { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+    #acct-title { font-size: 22px; font-weight: 700; color: #0F172A; }
+    #acct-title-badges { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+    #acct-sub { font-size: 13px; color: #64748B; margin-top: 4px; }
+    #acct-summary { font-size: 13px; color: #475569; margin-top: 6px; font-style: italic; }
+    .eng-dots { display: flex; gap: 3px; }
+    .eng-dot { width: 10px; height: 10px; border-radius: 50%; }
+    #btn-refresh-one { font-size: 11px; padding: 5px 12px; background: none; border: 1px solid #E2E8F0; border-radius: 6px; cursor: pointer; color: #64748B; margin-top: 6px; }
+    #next-action-bar { background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 8px; padding: 8px 12px; margin-bottom: 14px; font-size: 13px; }
+    #next-action-bar strong { font-size: 11px; font-weight: 700; color: #92400E; text-transform: uppercase; letter-spacing: 0.05em; margin-right: 6px; }
+    #next-action-bar .na-text { color: #78350F; }
+    #next-action-bar .na-meta { font-size: 11px; color: #B45309; margin-left: 8px; }
+    .tabs { display: flex; gap: 0; border-bottom: 2px solid #F1F5F9; }
+    .tab-btn { padding: 8px 18px; background: none; border: none; cursor: pointer; font-size: 13px; font-weight: 500; color: #94A3B8; border-bottom: 2px solid transparent; margin-bottom: -2px; text-transform: capitalize; }
+    .tab-btn.active { font-weight: 700; border-bottom-color: var(--acct-color); color: var(--acct-color); }
+    #tab-content { padding: 18px 28px 24px; }
+
+    /* Signals */
+    .signal-card { border: 1px solid #E2E8F0; border-radius: 10px; padding: 12px 14px; background: white; margin-bottom: 8px; }
+    .signal-top { display: flex; align-items: flex-start; gap: 10px; justify-content: space-between; }
+    .signal-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+    .urgency-badge { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; letter-spacing: 0.04em; white-space: nowrap; border: 1px solid; display: inline-flex; align-items: center; gap: 5px; }
+    .urgency-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+    .signal-type { font-size: 11px; color: #94A3B8; font-weight: 500; }
+    .signal-date { font-size: 11px; color: #94A3B8; }
+    .signal-source { font-size: 11px; color: #CBD5E1; }
+    .signal-headline { font-size: 14px; font-weight: 600; color: #0F172A; line-height: 1.4; }
+    .toggle-btn { background: none; border: none; cursor: pointer; color: #94A3B8; font-size: 14px; padding: 0 0 0 8px; flex-shrink: 0; }
+    .signal-expanded { margin-top: 10px; padding-top: 10px; border-top: 1px solid #F1F5F9; }
+    .signal-detail { font-size: 13px; color: #64748B; margin-bottom: 8px; line-height: 1.5; }
+    .signal-block { border-radius: 8px; padding: 8px 12px; margin-bottom: 8px; font-size: 13px; line-height: 1.5; }
+    .signal-block strong { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-right: 6px; }
+    .block-green { background: #F0FDF4; border: 1px solid #BBF7D0; color: #166534; }
+    .block-blue { background: #EFF6FF; border: 1px solid #BFDBFE; color: #1E40AF; }
+    .block-purple { background: #FDF4FF; border: 1px solid #E9D5FF; color: #6B21A8; }
+
+    /* Loading state */
+    .loading-state { text-align: center; padding: 48px 0; color: #94A3B8; }
+    .loading-state .spin { font-size: 28px; margin-bottom: 10px; animation: spin 1s linear infinite; display: inline-block; }
+    .fetch-btn { padding: 8px 20px; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
+
+    /* Contacts */
+    .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+    .stat-card { background: white; border: 1px solid #E2E8F0; border-radius: 10px; padding: 14px 16px; }
+    .stat-val { font-size: 22px; font-weight: 700; }
+    .stat-label { font-size: 11px; color: #94A3B8; margin-top: 2px; }
+    .key-contacts { background: white; border: 1px solid #E2E8F0; border-radius: 10px; padding: 14px 16px; }
+    .key-contacts-title { font-size: 12px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+    .contact-item { font-size: 13px; color: #334155; padding: 6px 0; border-bottom: 1px solid #F1F5F9; }
+    .contact-item:last-child { border-bottom: none; }
+
+    /* Outreach */
+    .outreach-panel { border: 1px solid #BFDBFE; border-radius: 10px; background: #EFF6FF; }
+    .outreach-toggle { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: none; border: none; cursor: pointer; }
+    .outreach-toggle span:first-child { font-size: 13px; font-weight: 600; color: #1E40AF; }
+    .outreach-toggle span:last-child { font-size: 12px; color: #3B82F6; }
+    .outreach-body { padding: 0 14px 14px; }
+    .outreach-from { font-size: 11px; color: #64748B; margin-bottom: 8px; }
+    .outreach-text { font-size: 12px; color: #1E293B; white-space: pre-wrap; background: white; border-radius: 8px; padding: 10px 12px; border: 1px solid #DBEAFE; margin-bottom: 10px; line-height: 1.6; }
+    .copy-btn { font-size: 12px; padding: 6px 14px; background: #2563EB; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
+    .copy-btn.copied { background: #16A34A; }
+
+    /* Priority view */
+    #priority-view { flex: 1; overflow-y: auto; padding: 24px 28px; }
+    #priority-view h2 { font-size: 20px; font-weight: 700; color: #0F172A; margin-bottom: 4px; }
+    #priority-view .sub { font-size: 13px; color: #64748B; margin-bottom: 20px; }
+    .priority-card { background: white; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid #FECACA; cursor: pointer; transition: box-shadow 0.15s; }
+    .priority-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+    .priority-card .pc-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    .priority-card .pc-acct { font-size: 12px; font-weight: 700; }
+    .priority-card .pc-ae { font-size: 11px; color: #94A3B8; }
+    .priority-card .pc-headline { font-size: 14px; font-weight: 600; color: #0F172A; margin-top: 6px; }
+    .priority-card .pc-play { font-size: 12px; color: #64748B; margin-top: 4px; }
+    .no-signals { text-align: center; padding: 60px 0; color: #94A3B8; }
+    .no-signals .icon { font-size: 36px; margin-bottom: 12px; }
+
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<!-- API Key Banner -->
+<div id="api-banner">
+  <span>🔑 Anthropic API Key:</span>
+  <input type="password" id="api-key-input" placeholder="sk-ant-..." autocomplete="off" />
+  <button onclick="saveApiKey()">Save</button>
+  <span id="api-status">Not set</span>
+</div>
+
+<div id="app">
+  <!-- Sidebar -->
+  <div id="sidebar">
+    <div id="sidebar-header">
+      <div class="label">Birdeye ABM</div>
+      <h1>STR Account Hub</h1>
+      <div class="sub" id="last-refresh-label">12 accounts · Not yet refreshed</div>
+    </div>
+    <div id="sidebar-actions">
+      <button id="btn-refresh-all" onclick="refreshAll()">⟳ Refresh All News</button>
+    </div>
+    <div id="priority-btn-wrap">
+      <button id="btn-priority" onclick="showPriorityView()">
+        <span>⚡ High Priority</span>
+        <span id="priority-badge" style="display:none">0</span>
+      </button>
+    </div>
+    <div id="accounts-label">Accounts</div>
+    <div id="account-list"></div>
+    <div id="legend">
+      <div class="legend-title">Signal Legend</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#EF4444"></div><span>ACT NOW</span></div>
+      <div class="legend-item"><div class="legend-dot" style="background:#F59E0B"></div><span>WATCH</span></div>
+      <div class="legend-item"><div class="legend-dot" style="background:#94A3B8"></div><span>FYI</span></div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div id="main">
+    <div id="empty-state">
+      <div class="arrow">←</div>
+      <p>Select an account or refresh all news</p>
+      <button onclick="refreshAll()">⟳ Refresh All 12 Accounts</button>
+    </div>
+    <div id="priority-view" style="display:none"></div>
+    <div id="acct-detail" style="display:none"></div>
+  </div>
+</div>
+
+<script>
+// ── ACCOUNT DATA ─────────────────────────────────────────────────────────────
+const ACCOUNTS = [
+  {
+    id:"pds", name:"Pacific Dental Services", shortName:"PDS Health", ae:"Brian J",
+    color:"#3B6FE0", colorLight:"#EEF3FD", competitor:"Yext", dealStage:"Pre-Engagement",
+    closeTarget:"Q3 2026", engagementScore:2,
+    contacts:{total:22,liValidated:13,working:0,converted:2,keyContacts:["Nina Robinson (VP National Marketing)"]},
+    nextAction:{text:"Run Demandbase display + LinkedIn message ad to Nina Robinson before H2 window opens.",owner:"ABM + Brian J",dueDate:"Mar 25"},
+    searchQuery:"PDS Health Pacific Dental Services news 2026",
+    outreachDraft:{channel:"LinkedIn Message Ad",sender:"Brian J",body:"Hi [First Name],\n\nPDS Health's rebrand across 1,000 locations is a significant undertaking — and what patients find on Google, ChatGPT, and Apple Maps at each location needs to match.\n\nWe work with multi-location health systems to ensure every location reflects the right brand story in AI search and review platforms — automatically, at scale.\n\nWorth a conversation ahead of your H2 planning cycle?"}
+  },
+  {
+    id:"multicare", name:"MultiCare Health System", shortName:"MultiCare", ae:"Brian J",
+    color:"#7C4DCC", colorLight:"#F3EEFB", competitor:"Press Ganey", dealStage:"Pre-Engagement",
+    closeTarget:"Q2–Q3 2026", engagementScore:3,
+    contacts:{total:23,liValidated:9,working:1,converted:0,keyContacts:["Karla Sclater (Working)","Aaron Cohen (CGO — new hire)"]},
+    nextAction:{text:"Target Aaron Cohen (CGO) on LinkedIn with platform unification + AI search messaging.",owner:"ABM + Brian J",dueDate:"Mar 28"},
+    searchQuery:"MultiCare Health System news leadership 2026",
+    outreachDraft:{channel:"LinkedIn InMail (from Brian J)",sender:"Brian J",body:"Hi Aaron,\n\nCongrats on the CGO appointment — exciting role with the growth agenda at MultiCare.\n\nOne thing that comes up consistently for health systems at your scale is keeping patient-facing presence — reviews, listings, AI search — consistent as the system grows.\n\nWe work with health systems at exactly this inflection point. Happy to share how others have approached it.\n\nWorth 20 minutes?"}
+  },
+  {
+    id:"fullspeed", name:"FullSpeed Automotive", shortName:"FullSpeed Auto", ae:"Brian Bulkley",
+    color:"#C07A00", colorLight:"#FDF6E7", competitor:"None identified", dealStage:"Early Outreach",
+    closeTarget:"Q2 2026", engagementScore:3,
+    contacts:{total:12,liValidated:9,working:3,converted:0,keyContacts:["Stacey Pool (CMO — Working)","Vanessa Allen (Working)","Bethany Kaufman (Working)"]},
+    nextAction:{text:"Send Stacey Pool Sun Auto Tire case study via LinkedIn.",owner:"Brian Bulkley + ABM",dueDate:"Mar 20"},
+    searchQuery:"FullSpeed Automotive news franchise growth 2026",
+    outreachDraft:{channel:"LinkedIn Message (from Brian Bulkley)",sender:"Brian Bulkley",body:"Hi Stacey,\n\nCongrats on the CMO role at FullSpeed — exciting time with the franchise growth momentum you're building.\n\nOne of our customers, Sun Auto Tire, faced a similar challenge managing customer experience and local visibility across a rapidly expanding multi-brand footprint. Happy to share what they figured out.\n\nWould a quick call make sense?"}
+  },
+  {
+    id:"advocate", name:"Advocate Health", shortName:"Advocate Health", ae:"Jordan",
+    color:"#CC3A2F", colorLight:"#FDEEED", competitor:"Rep.com", dealStage:"Active RFP",
+    closeTarget:"ASAP", engagementScore:4,
+    contacts:{total:13,liValidated:2,working:1,converted:1,keyContacts:["Dominica Tallarico (Working)","Britt-Ann Brandt (Converted)"]},
+    nextAction:{text:"URGENT: Jordan direct email to RFP buying committee. ABM activate Demandbase + LinkedIn to all 13 contacts.",owner:"Jordan + ABM",dueDate:"TODAY"},
+    searchQuery:"Advocate Health news leadership strategy 2026",
+    outreachDraft:{channel:"Direct Email (from Jordan)",sender:"Jordan",body:"Hi [First Name],\n\nAs you work through your platform evaluation, I wanted to make sure you have a clear picture of who would be supporting Advocate Health from day one with Birdeye.\n\n[Attach team slide — CSM, implementation lead, enterprise support contacts]\n\nThe team that wins your business is the team that serves it. Happy to walk through our enterprise onboarding and introduce the people who'd be in your corner.\n\nCan we find 30 minutes this week?"}
+  },
+  {
+    id:"moneygram", name:"MoneyGram", shortName:"MoneyGram", ae:"Derek",
+    color:"#0A8A8A", colorLight:"#E6F6F6", competitor:"None (POCs churned)", dealStage:"Re-Engage",
+    closeTarget:"Q2–Q3 2026", engagementScore:2,
+    contacts:{total:14,liValidated:5,working:0,converted:1,keyContacts:["Doug Klees (LI validated)","Jeffrey Gorsuch (LI validated)","Juan Agualimpia (LI validated)"]},
+    nextAction:{text:"Derek to map CFO Marc Winniford + CEO Anthony Soohoo on LinkedIn. ABM Demandbase display + email new exec contacts.",owner:"Derek + ABM",dueDate:"Mar 22"},
+    searchQuery:"MoneyGram news executive leadership strategy 2026",
+    outreachDraft:{channel:"LinkedIn (Derek — to new C-suite)",sender:"Derek",body:"Hi [First Name],\n\nCongrats on joining MoneyGram — exciting time to be building at a global fintech platform at that scale.\n\nBirdeye works with financial services networks to manage customer experience and local visibility across hundreds of thousands of agent locations. With 470,000+ locations globally, the scale challenge MoneyGram faces is one we know well.\n\nWould a brief intro call make sense?"}
+  },
+  {
+    id:"drhorton", name:"DR Horton", shortName:"DR Horton", ae:"Derek",
+    color:"#2E7D32", colorLight:"#E8F5E9", competitor:"ChatMeter", dealStage:"Early Outreach",
+    closeTarget:"Q3 2026", engagementScore:3,
+    contacts:{total:37,liValidated:16,working:0,converted:2,keyContacts:["Michael Murray (LI validated)","Nicolle Cordell-Evans (LI validated)","Nikki Paulsen (LI validated)"]},
+    nextAction:{text:"Derek to use reputation protection angle as entry hook vs ChatMeter scale argument.",owner:"Derek + ABM",dueDate:"Apr 1"},
+    searchQuery:"DR Horton homebuilder news reputation 2026",
+    outreachDraft:{channel:"LinkedIn (Derek — to marketing team)",sender:"Derek",body:"Hi [First Name],\n\nWith DR Horton opening communities across the country at pace, getting every new community to strong reviews and local visibility from opening day is a real operational challenge.\n\nBirdeye manages that for homebuilders at scale — reviews, listings, and AI search across every community, from day one.\n\nHappy to show you how it works. Worth 20 minutes?"}
+  },
+  {
+    id:"fiveguys", name:"Five Guys", shortName:"Five Guys", ae:"April Ngo",
+    color:"#C62828", colorLight:"#FFEBEE", competitor:"Yext", dealStage:"Re-Engage",
+    closeTarget:"Q2 2026", engagementScore:4,
+    contacts:{total:29,liValidated:22,working:1,converted:0,keyContacts:["Jack Goodson (Working — LI validated)"]},
+    nextAction:{text:"April to send free AI visibility scan for top 10 markets showing Yext gap on ChatGPT/Perplexity.",owner:"April Ngo + ABM",dueDate:"Mar 22"},
+    searchQuery:"Five Guys restaurant news AI search local 2026",
+    outreachDraft:{channel:"LinkedIn (April — to Jack Goodson)",sender:"April Ngo",body:"Hi Jack,\n\nQuick one — we ran an AI search visibility scan on Five Guys across your top 10 markets and the results are worth seeing. Specifically how your locations are showing up (or not) on ChatGPT and Perplexity vs competitors.\n\nHappy to share the full scan. Would that be useful?"}
+  },
+  {
+    id:"adventist", name:"Adventist Health", shortName:"Adventist Health", ae:"Rich",
+    color:"#1565C0", colorLight:"#E3F2FD", competitor:"Yext (prior)", dealStage:"Re-Engage",
+    closeTarget:"Q2 2026", engagementScore:3,
+    contacts:{total:49,liValidated:26,working:0,converted:0,keyContacts:["Mara Bryant (LI validated)","Patricia Stone (LI validated)","Karen Hansberger (LI validated)"]},
+    nextAction:{text:"Rich to use Yext POC connection. NEW: Sebrena Sawtell named VP Marketing Mar 2026 — fresh entry point this week.",owner:"Rich + ABM",dueDate:"Mar 20"},
+    searchQuery:"Adventist Health news leadership marketing 2026",
+    outreachDraft:{channel:"LinkedIn (Rich — personal re-engagement)",sender:"Rich",body:"Hi [Name],\n\nHope you're doing well through all the changes at Adventist Health. I've been following the news and wanted to reach out personally.\n\nI'm now at Birdeye and working with a number of health systems on patient experience and local visibility — and given what you're navigating, I think the conversation could be really timely.\n\nWould love to reconnect. Do you have 20 minutes in the next couple of weeks?"}
+  },
+  {
+    id:"cedars", name:"Cedars-Sinai", shortName:"Cedars-Sinai", ae:"Rich",
+    color:"#00695C", colorLight:"#E0F2F1", competitor:"Yext (Search — existing)", dealStage:"Upsell Target",
+    closeTarget:"Q2 2026", engagementScore:3,
+    contacts:{total:69,liValidated:7,working:1,converted:0,keyContacts:["Carrie Yutzy (Working — LI validated)"]},
+    nextAction:{text:"Rich to pitch ORM + Surveys to Carrie Yutzy — bridge from Search relationship.",owner:"Rich + ABM",dueDate:"Mar 28"},
+    searchQuery:"Cedars-Sinai health news technology patient experience 2026",
+    outreachDraft:{channel:"Email (Rich to Carrie Yutzy)",sender:"Rich",body:"Hi Carrie,\n\nReally glad how the Search AI piece has come together for Cedars-Sinai.\n\nI wanted to share something a few of our health system customers have added as a natural next step — reputation and survey management in the same platform. You're already managing how patients find you; this closes the loop on what they say once they do.\n\nWould it make sense to include your ORM team in a quick demo?"}
+  },
+  {
+    id:"ccm", name:"CrossCountry Mortgage", shortName:"CrossCountry", ae:"Brian Bulkley",
+    color:"#AD1457", colorLight:"#FCE4EC", competitor:"None confirmed", dealStage:"Active Evaluation",
+    closeTarget:"June 2026", engagementScore:4,
+    contacts:{total:73,liValidated:15,working:0,converted:2,keyContacts:["Beth Keckley (LI validated)","Ryan Brown (Nurture Emails)"]},
+    nextAction:{text:"Brian to accelerate close — LO-level reputation management + compliance angle before June.",owner:"Brian Bulkley + ABM",dueDate:"Apr 15"},
+    searchQuery:"CrossCountry Mortgage news expansion compliance 2026",
+    outreachDraft:{channel:"Direct Email (Brian Bulkley)",sender:"Brian Bulkley",body:"Hi [First Name],\n\nAs CCM continues to grow its LO footprint, managing reputation and visibility at the loan officer level becomes a real operational challenge — and increasingly a compliance consideration too.\n\nBirdeye manages LO-level reviews, listings, and local presence at scale, with compliance workflows built for mortgage. Happy to walk through what that looks like for a lender at your size.\n\nCan we find 30 minutes before end of April?"}
+  },
+  {
+    id:"willowbridge", name:"Willow Bridge Property", shortName:"Willow Bridge", ae:"Michael Tarter",
+    color:"#4527A0", colorLight:"#EDE7F6", competitor:"SOCI (prior)", dealStage:"Re-Engage Q2",
+    closeTarget:"Q2 2026", engagementScore:3,
+    contacts:{total:97,liValidated:46,working:0,converted:0,keyContacts:["Jaye Hughes (LI validated)","Michelle Rodriguez (LI validated)","Brandi Vinson (LI validated)"]},
+    nextAction:{text:"Michael to lead with lease-up angle for DC/Miami/TX/Chicago communities. Reference Chris Burns NAA Chair.",owner:"Michael Tarter + ABM",dueDate:"Apr 1"},
+    searchQuery:"Willow Bridge Property Company multifamily news 2026",
+    outreachDraft:{channel:"LinkedIn (Michael Tarter)",sender:"Michael Tarter",body:"Hi [First Name],\n\nWith Willow Bridge continuing to grow its portfolio, the lease-up phase for new communities is where reputation strategy matters most — getting to 4.5 stars before the first resident signs.\n\nBirdeye works with top NMHC operators to manage reviews, resident feedback, and local visibility across every community. Happy to share what that looks like at your scale.\n\nWould a quick conversation make sense this quarter?"}
+  },
+  {
+    id:"tjx", name:"TJX Companies", shortName:"TJX Companies", ae:"Michael Tarter",
+    color:"#E65100", colorLight:"#FBE9E7", competitor:"Unknown (lost survey RFP)", dealStage:"Re-Engage",
+    closeTarget:"Q2–Q3 2026", engagementScore:2,
+    contacts:{total:0,liValidated:0,working:0,converted:0,keyContacts:["CMO (via founder connection)","Head of Consumer Insights (via founder connection)"]},
+    nextAction:{text:"Michael to re-engage CMO + Consumer Insights post-Q4 earnings with AI survey summaries story.",owner:"Michael Tarter + ABM",dueDate:"Mar 31"},
+    searchQuery:"TJX Companies news consumer insights strategy 2026",
+    outreachDraft:{channel:"Email (Michael Tarter — via founder connection)",sender:"Michael Tarter",body:"Hi [First Name],\n\nCongrats on a strong Q4 — the results speak for themselves.\n\nI've been thinking about the survey conversation we had previously and wanted to revisit it with a different angle. At 4,900+ stores, the only way to make sense of location-level customer feedback is AI — and that's exactly what Birdeye's survey summaries do.\n\nWould you be open to a quick look? I think it lands differently now than it did before."}
+  }
+];
+
+const URGENCY = {
+  "ACT NOW": {bg:"#FEF2F2",text:"#991B1B",dot:"#EF4444",border:"#FECACA"},
+  "WATCH":   {bg:"#FFFBEB",text:"#92400E",dot:"#F59E0B",border:"#FDE68A"},
+  "FYI":     {bg:"#F8FAFC",text:"#475569",dot:"#94A3B8",border:"#E2E8F0"}
+};
+
+const STAGE_COLORS = {
+  "Active RFP":        {bg:"#FEF2F2",text:"#991B1B"},
+  "Active Evaluation": {bg:"#FFF7ED",text:"#9A3412"},
+  "Upsell Target":     {bg:"#F0FDF4",text:"#166534"},
+  "Early Outreach":    {bg:"#EFF6FF",text:"#1E40AF"},
+  "Pre-Engagement":    {bg:"#F8FAFC",text:"#475569"},
+  "Re-Engage":         {bg:"#FDF4FF",text:"#6B21A8"},
+  "Re-Engage Q2":      {bg:"#FDF4FF",text:"#6B21A8"}
+};
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let apiKey = localStorage.getItem("birdeye_api_key") || "";
+let newsMap = {};
+let loadingSet = new Set();
+let selectedId = null;
+let activeTab = "signals";
+let showPriority = false;
+
+// ── API KEY ───────────────────────────────────────────────────────────────────
+function saveApiKey() {
+  const val = document.getElementById("api-key-input").value.trim();
+  if (!val) return;
+  apiKey = val;
+  localStorage.setItem("birdeye_api_key", val);
+  updateApiStatus();
+}
+
+function updateApiStatus() {
+  const el = document.getElementById("api-status");
+  if (apiKey && apiKey.startsWith("sk-ant-")) {
+    el.textContent = "✓ Key saved";
+    el.className = "ok";
+  } else if (apiKey) {
+    el.textContent = "⚠ Check key format";
+    el.className = "";
+  } else {
+    el.textContent = "Not set";
+    el.className = "";
+  }
+}
+
+// ── NEWS FETCH ────────────────────────────────────────────────────────────────
+async function fetchAccountNews(account) {
+  if (!apiKey) { alert("Please enter your Anthropic API key first."); return; }
+
+  loadingSet.add(account.id);
+  renderSidebar();
+  renderMain();
+
+  const systemPrompt = `You are a B2B sales intelligence analyst for Birdeye, an AI-powered reputation and customer experience platform for multi-location businesses. Surface concise, actionable news signals for enterprise sales teams.
+
+RULES:
+- Return ONLY valid JSON, no markdown, no preamble, no code fences
+- Each signal must be genuinely newsworthy and recent (prioritize 2026, then late 2025)
+- Urgency: "ACT NOW" = new leadership hire, active procurement, major expansion; "WATCH" = growth signal, tech investment; "FYI" = background context
+- Never mention mergers, acquisitions, or M&A in the "play" or "adAngle" fields — AE intel only
+- Never mention competitor names in "adAngle" — must be safe for Demandbase display ads
+- Keep headlines under 12 words`;
+
+  const userPrompt = `Search for the latest news about "${account.name}" relevant to selling customer experience and reputation management software.
+
+Context: competitor they use is ${account.competitor}, deal stage is ${account.dealStage}.
+
+Return ONLY this JSON structure (no other text):
+{"signals":[{"urgency":"ACT NOW|WATCH|FYI","type":"string","headline":"string under 12 words","date":"string","source":"string","detail":"string","whyMatters":"string","play":"string","adAngle":"string"}],"lastRefreshed":"${new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}","summary":"string one sentence"}
+
+Return 2-3 signals.`;
+
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true"
+      },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        tools: [{ type: "web_search_20250305", name: "web_search" }],
+        system: systemPrompt,
+        messages: [{ role: "user", content: userPrompt }]
+      })
+    });
+
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+
+    const textBlocks = (data.content || []).filter(b => b.type === "text").map(b => b.text).join("");
+    const match = textBlocks.match(/\{[\s\S]*\}/);
+    if (!match) throw new Error("No JSON in response");
+    newsMap[account.id] = JSON.parse(match[0]);
+  } catch(e) {
+    newsMap[account.id] = {
+      signals: [{urgency:"FYI",type:"Error",headline:"Could not fetch news — try again",date:"Now",detail:e.message,whyMatters:"",play:"",adAngle:""}],
+      summary: "Fetch failed", lastRefreshed: "—"
+    };
+  }
+
+  loadingSet.delete(account.id);
+  renderSidebar();
+  updatePriorityBadge();
+  renderMain();
+}
+
+async function refreshAll() {
+  if (!apiKey) { alert("Please enter your Anthropic API key first."); return; }
+  const btn = document.getElementById("btn-refresh-all");
+  btn.disabled = true;
+  btn.textContent = "⟳ Fetching news...";
+  await Promise.all(ACCOUNTS.map(a => fetchAccountNews(a)));
+  const now = new Date().toLocaleDateString("en-US", {month:"short",day:"numeric",year:"numeric"});
+  document.getElementById("last-refresh-label").textContent = `12 accounts · Updated ${now}`;
+  btn.disabled = false;
+  btn.textContent = "⟳ Refresh All News";
+}
+
+// ── RENDER SIDEBAR ────────────────────────────────────────────────────────────
+function renderSidebar() {
+  const list = document.getElementById("account-list");
+  list.innerHTML = ACCOUNTS.map(a => {
+    const news = newsMap[a.id];
+    const actNow = news ? news.signals.filter(s => s.urgency === "ACT NOW").length : 0;
+    const loading = loadingSet.has(a.id);
+    const sc = STAGE_COLORS[a.dealStage] || STAGE_COLORS["Pre-Engagement"];
+    const isActive = selectedId === a.id && !showPriority;
+    return `<button class="acct-row${isActive?" active":""}" 
+      style="--color:${a.color};--color-light:${a.colorLight}"
+      onclick="selectAccount('${a.id}')">
+      <div class="name">
+        ${a.shortName}
+        <span>
+          ${loading ? `<span class="acct-loading">⟳</span>` : ""}
+          ${actNow > 0 && !loading ? `<span class="acct-badge">${actNow}</span>` : ""}
+        </span>
+      </div>
+      <div class="meta">
+        <span class="ae-name">${a.ae}</span>
+        <span style="font-size:10px;color:#CBD5E1">·</span>
+        <span class="stage-pill" style="background:${sc.bg};color:${sc.text}">${a.dealStage}</span>
+      </div>
+    </button>`;
+  }).join("");
+}
+
+function updatePriorityBadge() {
+  const total = Object.values(newsMap).reduce((n, d) => n + (d?.signals?.filter(s => s.urgency === "ACT NOW").length || 0), 0);
+  const badge = document.getElementById("priority-badge");
+  if (total > 0) { badge.textContent = total; badge.style.display = "inline"; }
+  else badge.style.display = "none";
+}
+
+// ── RENDER MAIN ───────────────────────────────────────────────────────────────
+function renderMain() {
+  const empty = document.getElementById("empty-state");
+  const priority = document.getElementById("priority-view");
+  const detail = document.getElementById("acct-detail");
+
+  if (showPriority) {
+    empty.style.display = "none"; detail.style.display = "none"; priority.style.display = "block";
+    renderPriorityView();
+  } else if (selectedId) {
+    empty.style.display = "none"; priority.style.display = "none"; detail.style.display = "flex";
+    renderAccountDetail();
+  } else {
+    priority.style.display = "none"; detail.style.display = "none"; empty.style.display = "flex";
+  }
+}
+
+function selectAccount(id) {
+  selectedId = id; showPriority = false; activeTab = "signals";
+  const acct = ACCOUNTS.find(a => a.id === id);
+  if (acct && !newsMap[id] && !loadingSet.has(id)) fetchAccountNews(acct);
+  renderSidebar();
+  renderMain();
+}
+
+function showPriorityView() {
+  showPriority = true; selectedId = null;
+  document.getElementById("btn-priority").classList.add("active");
+  renderSidebar();
+  renderMain();
+}
+
+function setTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
+  document.getElementById("tab-content").innerHTML = renderTabContent();
+  attachTabEvents();
+}
+
+// ── PRIORITY VIEW ─────────────────────────────────────────────────────────────
+function renderPriorityView() {
+  const all = ACCOUNTS.flatMap(a => (newsMap[a.id]?.signals || []).filter(s => s.urgency === "ACT NOW").map(s => ({...s, account: a})));
+  document.getElementById("priority-view").innerHTML = `
+    <h2>⚡ High Priority Signals</h2>
+    <p class="sub">${all.length} ACT NOW signal${all.length !== 1 ? "s" : ""} across all accounts</p>
+    ${all.length === 0 ? `<div class="no-signals"><div class="icon">⟳</div><div>Hit "Refresh All News" to load live signals</div></div>` :
+      all.map(s => `
+        <div class="priority-card" onclick="selectAccount('${s.account.id}')">
+          <div class="pc-top">
+            <span class="pc-acct" style="color:${s.account.color}">${s.account.name}</span>
+            <span class="pc-ae">AE: ${s.account.ae}</span>
+          </div>
+          ${urgencyBadgeHTML("ACT NOW")}
+          <div class="pc-headline">${s.headline}</div>
+          ${s.play ? `<div class="pc-play">→ ${s.play}</div>` : ""}
+        </div>`).join("")}`;
+}
+
+// ── ACCOUNT DETAIL ────────────────────────────────────────────────────────────
+function renderAccountDetail() {
+  const a = ACCOUNTS.find(x => x.id === selectedId);
+  if (!a) return;
+  const news = newsMap[a.id];
+  const sc = STAGE_COLORS[a.dealStage] || STAGE_COLORS["Pre-Engagement"];
+
+  document.getElementById("acct-detail").innerHTML = `
+    <div id="acct-header">
+      <div id="acct-title-row">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <div id="acct-title">${a.name}</div>
+            <span class="stage-pill" style="background:${sc.bg};color:${sc.text};font-size:12px;padding:3px 10px;border-radius:6px">${a.dealStage}</span>
+          </div>
+          <div id="acct-sub">AE: ${a.ae} · vs ${a.competitor} · Close: ${a.closeTarget}</div>
+          ${news?.summary ? `<div id="acct-summary">${news.summary}</div>` : ""}
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          <div class="eng-dots">${[1,2,3,4,5].map(i => `<div class="eng-dot" style="background:${i<=a.engagementScore?"#22C55E":"#E2E8F0"}"></div>`).join("")}</div>
+          <button id="btn-refresh-one" onclick="fetchAccountNews(ACCOUNTS.find(x=>x.id==='${a.id}'))">
+            ${loadingSet.has(a.id) ? "Fetching..." : "↻ Refresh"}
+          </button>
+        </div>
+      </div>
+      <div id="next-action-bar">
+        <strong>Next Action</strong>
+        <span class="na-text">${a.nextAction.text}</span>
+        <span class="na-meta">→ ${a.nextAction.owner} · Due: ${a.nextAction.dueDate}</span>
+      </div>
+      <div class="tabs" style="--acct-color:${a.color}">
+        ${["signals","contacts","outreach"].map(t => `<button class="tab-btn${activeTab===t?" active":""}" data-tab="${t}" onclick="setTab('${t}')">${t}</button>`).join("")}
+      </div>
+    </div>
+    <div id="tab-content" style="padding:18px 28px 24px;flex:1;overflow-y:auto">${renderTabContent()}</div>`;
+
+  attachTabEvents();
+}
+
+function renderTabContent() {
+  const a = ACCOUNTS.find(x => x.id === selectedId);
+  const news = newsMap[a.id];
+
+  if (activeTab === "signals") {
+    if (loadingSet.has(a.id)) return `<div class="loading-state"><div class="spin">⟳</div><div>Fetching latest news for ${a.shortName}...</div></div>`;
+    if (!news) return `<div class="loading-state"><div style="font-size:28px;margin-bottom:10px">📰</div><div style="margin-bottom:14px">No news loaded yet</div><button class="fetch-btn" style="background:${a.color}" onclick="fetchAccountNews(ACCOUNTS.find(x=>x.id==='${a.id}'))">Fetch News Now</button></div>`;
+    return `<div style="font-size:11px;color:#94A3B8;margin-bottom:12px">Last updated: ${news.lastRefreshed || "just now"}</div>` +
+      news.signals.map((s, i) => signalCardHTML(s, i)).join("");
+  }
+
+  if (activeTab === "contacts") {
+    const c = a.contacts;
+    return `<div class="stat-grid">
+      ${[["Total in SFDC",c.total,"#0F172A"],["LI Validated",c.liValidated,a.color],["Working",c.working,"#F59E0B"],["Converted",c.converted,"#22C55E"]]
+        .map(([l,v,col]) => `<div class="stat-card"><div class="stat-val" style="color:${col}">${v}</div><div class="stat-label">${l}</div></div>`).join("")}
+    </div>
+    <div class="key-contacts">
+      <div class="key-contacts-title">Key Contacts</div>
+      ${c.keyContacts.map(k => `<div class="contact-item">· ${k}</div>`).join("")}
+    </div>`;
+  }
+
+  if (activeTab === "outreach") {
+    const d = a.outreachDraft;
+    return `<div class="outreach-panel">
+      <button class="outreach-toggle" onclick="toggleOutreach(this)">
+        <span>✉ AE-Ready Outreach — ${d.channel}</span>
+        <span>▼ expand</span>
+      </button>
+      <div class="outreach-body" style="display:none">
+        <div class="outreach-from">From: ${d.sender}</div>
+        <div class="outreach-text">${d.body}</div>
+        <button class="copy-btn" onclick="copyOutreach(this,'${a.id}')">Copy</button>
+      </div>
+    </div>`;
+  }
+}
+
+function attachTabEvents() {}
+
+function toggleOutreach(btn) {
+  const body = btn.nextElementSibling;
+  const isOpen = body.style.display !== "none";
+  body.style.display = isOpen ? "none" : "block";
+  btn.querySelector("span:last-child").textContent = isOpen ? "▼ expand" : "▲ collapse";
+}
+
+function copyOutreach(btn, id) {
+  const a = ACCOUNTS.find(x => x.id === id);
+  navigator.clipboard.writeText(a.outreachDraft.body).then(() => {
+    btn.textContent = "✓ Copied!"; btn.classList.add("copied");
+    setTimeout(() => { btn.textContent = "Copy"; btn.classList.remove("copied"); }, 2000);
+  });
+}
+
+// ── SIGNAL CARD HTML ──────────────────────────────────────────────────────────
+function signalCardHTML(s, idx) {
+  const id = `sig-${selectedId}-${idx}`;
+  return `<div class="signal-card">
+    <div class="signal-top">
+      <div style="flex:1">
+        <div class="signal-meta">
+          ${urgencyBadgeHTML(s.urgency)}
+          <span class="signal-type">${s.type || ""}</span>
+          ${s.date ? `<span class="signal-date">· ${s.date}</span>` : ""}
+          ${s.source ? `<span class="signal-source">via ${s.source}</span>` : ""}
+        </div>
+        <div class="signal-headline">${s.headline}</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSignal('${id}')">▼</button>
+    </div>
+    <div id="${id}" class="signal-expanded" style="display:none">
+      ${s.detail ? `<p class="signal-detail">${s.detail}</p>` : ""}
+      ${s.whyMatters ? `<div class="signal-block block-green"><strong>Why It Matters</strong>${s.whyMatters}</div>` : ""}
+      ${s.play ? `<div class="signal-block block-blue"><strong>The Play</strong>${s.play}</div>` : ""}
+      ${s.adAngle ? `<div class="signal-block block-purple"><strong>Ad Angle (Demandbase)</strong>${s.adAngle}</div>` : ""}
+    </div>
+  </div>`;
+}
+
+function toggleSignal(id) {
+  const el = document.getElementById(id);
+  const btn = el.previousElementSibling.querySelector(".toggle-btn");
+  const open = el.style.display !== "none";
+  el.style.display = open ? "none" : "block";
+  btn.textContent = open ? "▼" : "▲";
+}
+
+function urgencyBadgeHTML(u) {
+  const cfg = URGENCY[u] || URGENCY["FYI"];
+  return `<span class="urgency-badge" style="background:${cfg.bg};color:${cfg.text};border-color:${cfg.border}">
+    <span class="urgency-dot" style="background:${cfg.dot}"></span>${u}</span>`;
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+if (apiKey) document.getElementById("api-key-input").value = apiKey;
+updateApiStatus();
+renderSidebar();
+renderMain();
+</script>
+</body>
+</html>
