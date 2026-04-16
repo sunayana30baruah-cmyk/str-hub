@@ -34,6 +34,14 @@
     .ae-name { font-size: 11px; color: #94A3B8; }
     .stage-pill { font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 4px; }
     .acct-badge { background: #EF4444; color: white; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 999px; }
+    .opp-pill { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; letter-spacing: 0.03em; }
+    .opp-Qualify      { background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; }
+    .opp-Align        { background: #F5F3FF; color: #6D28D9; border: 1px solid #DDD6FE; }
+    .opp-Discovery    { background: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; }
+    .opp-Acceptance   { background: #FFF7ED; color: #C2410C; border: 1px solid #FED7AA; }
+    .opp-Closed-Lost  { background: #F1F5F9; color: #64748B; border: 1px solid #CBD5E1; }
+    .opp-No-Opp       { background: #F1F5F9; color: #94A3B8; border: 1px solid #E2E8F0; }
+    .opp-Dead         { background: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; }
     #legend { padding: 12px 16px; border-top: 1px solid #F1F5F9; }
     #legend .legend-title { font-size: 10px; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
     .legend-item { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; }
@@ -195,8 +203,9 @@ const STAGE_COLORS = {
 };
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
-let signalsData = {};   // { account_id: [ {urgency, type, headline, date, source, detail, why_matters, play, ad_angle}, ... ] }
+let signalsData = {};   // { account_id: [ {urgency, type, headline, ...} ] }
 let summaryData = {};   // { account_id: "summary string" }
+let dealStageData = {}; // { account_id: "Qualify" | "Align" | etc }
 let selectedId = null;
 let activeTab = "signals";
 let showPriority = false;
@@ -245,6 +254,7 @@ async function loadSheet() {
     // Reset
     signalsData = {};
     summaryData = {};
+    dealStageData = {};
 
     rows.forEach(row => {
       const id = row["account_id"];
@@ -262,6 +272,7 @@ async function loadSheet() {
         adAngle:    row["ad_angle"] || ""
       });
       if (row["summary"]) summaryData[id] = row["summary"];
+      if (row["deal_stage"]) dealStageData[id] = row["deal_stage"];
     });
 
     const now = new Date().toLocaleString("en-US", {month:"short",day:"numeric",hour:"numeric",minute:"2-digit"});
@@ -301,10 +312,16 @@ function renderSidebar() {
     const signals = signalsData[id] || [];
     const actNow = signals.filter(s => s.urgency === "ACT NOW").length;
     const sc = STAGE_COLORS[meta.dealStage] || STAGE_COLORS["Pre-Engagement"];
+    const oppStage = dealStageData[id] || "";
+    const oppClass = "opp-" + oppStage.replace(/\s+/g, "-");
     const isActive = selectedId === id && !showPriority;
     return `<button class="acct-row${isActive?" active":""}" style="--color:${meta.color};--color-light:${meta.colorLight}" onclick="selectAccount('${id}')">
       <div class="name">${meta.shortName}<span>${actNow > 0 ? `<span class="acct-badge">${actNow}</span>` : ""}</span></div>
-      <div class="meta"><span class="ae-name">${meta.ae}</span><span style="font-size:10px;color:#CBD5E1">·</span><span class="stage-pill" style="background:${sc.bg};color:${sc.text}">${meta.dealStage}</span></div>
+      <div class="meta">
+        <span class="ae-name">${meta.ae}</span>
+        <span style="font-size:10px;color:#CBD5E1">·</span>
+        ${oppStage ? `<span class="opp-pill ${oppClass}">${oppStage}</span>` : `<span class="stage-pill" style="background:${sc.bg};color:${sc.text}">${meta.dealStage}</span>`}
+      </div>
     </button>`;
   }).join("");
 }
@@ -364,6 +381,8 @@ function renderAccountDetail() {
   const signals = signalsData[selectedId] || [];
   const summary = summaryData[selectedId] || "";
   const sc = STAGE_COLORS[meta.dealStage] || STAGE_COLORS["Pre-Engagement"];
+  const oppStage = dealStageData[selectedId] || "";
+  const oppClass = "opp-" + oppStage.replace(/\s+/g, "-");
 
   document.getElementById("acct-detail").innerHTML = `
     <div id="acct-header">
@@ -371,7 +390,8 @@ function renderAccountDetail() {
         <div>
           <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
             <div id="acct-title">${meta.name}</div>
-            <span class="stage-pill" style="background:${sc.bg};color:${sc.text};font-size:12px;padding:3px 10px;border-radius:6px">${meta.dealStage}</span>
+            ${oppStage ? `<span class="opp-pill ${oppClass}" style="font-size:13px;padding:3px 12px">${oppStage}</span>` : ""}
+            <span class="stage-pill" style="background:${sc.bg};color:${sc.text};font-size:11px;padding:2px 8px;border-radius:6px">${meta.dealStage}</span>
           </div>
           <div id="acct-sub">AE: ${meta.ae} · vs ${meta.competitor} · Close: ${meta.closeTarget}</div>
           ${summary ? `<div id="acct-summary">${summary}</div>` : ""}
