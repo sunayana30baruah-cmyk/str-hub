@@ -421,6 +421,122 @@
     .proof blockquote { font-size: 19px; }
     .cta h2 { font-size: 28px; }
   }
+
+  /* ─── WHY BIRDEYE IS DIFFERENT ─── */
+  .diff {
+    padding: 100px 32px;
+    background: #ffffff;
+  }
+  .diff-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .diff-title {
+    font-size: 40px;
+    font-weight: 700;
+    color: #0a1f3d;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 18px;
+  }
+  .diff-accent { color: #185fa5; }
+  .diff-sub {
+    font-size: 17px;
+    color: #4a5568;
+    margin-bottom: 56px;
+    max-width: 620px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .diff-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 72px;
+    text-align: left;
+  }
+  .diff-card {
+    background: #ffffff;
+    border: 1px solid #e6eef8;
+    border-radius: 16px;
+    padding: 32px 28px;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+  }
+  .diff-card:hover {
+    border-color: #b5d4f4;
+    box-shadow: 0 8px 32px rgba(12,68,124,0.08);
+    transform: translateY(-2px);
+  }
+  .diff-tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #94a3b8;
+    margin-bottom: 12px;
+  }
+  .diff-tag-blue { color: #185fa5; }
+  .diff-problem {
+    font-size: 15px;
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    font-style: italic;
+  }
+  .diff-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #b5d4f4, transparent);
+    margin-bottom: 24px;
+  }
+  .diff-answer {
+    font-size: 16px;
+    color: #0a1f3d;
+    line-height: 1.6;
+    font-weight: 500;
+  }
+  .diff-proof {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f7faff;
+    border: 1px solid #e6eef8;
+    border-radius: 16px;
+    padding: 36px 40px;
+    gap: 48px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .diff-proof-item {
+    text-align: center;
+  }
+  .diff-proof-num {
+    font-size: 36px;
+    font-weight: 800;
+    color: #185fa5;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .diff-proof-lbl {
+    font-size: 13px;
+    color: #6b7280;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .diff-proof-divider {
+    width: 1px;
+    height: 48px;
+    background: #e6eef8;
+  }
+  @media (max-width: 880px) {
+    .diff-grid { grid-template-columns: 1fr; }
+    .diff-title { font-size: 28px; }
+    .diff-proof { flex-direction: column; gap: 28px; padding: 28px; }
+    .diff-proof-divider { width: 48px; height: 1px; }
+  }
 </style>
 </head>
 <body>
@@ -477,11 +593,55 @@
     </div>
   </section>
 
-  <!-- HOW BIRDEYE HELPS -->
-  <section class="help">
-    <div class="help-inner">
-      <div class="section-eyebrow">How Birdeye helps</div>
-      <h2>Birdeye helps multi-location retail brands understand what shoppers are saying across every store and banner, turning review and survey data into actionable insight for operations and leadership.</h2>
+  <!-- WHY BIRDEYE IS DIFFERENT -->
+  <section class="diff">
+    <div class="diff-inner">
+      <div class="section-eyebrow">Why Birdeye is different</div>
+      <h2 class="diff-title">4,900 stores generate a lot of noise.<br><span class="diff-accent">We turn it into signal.</span></h2>
+      <p class="diff-sub">Other platforms give you data. Birdeye gives your consumer insights team something they can act on this week.</p>
+
+      <div class="diff-grid">
+        <div class="diff-card">
+          <div class="diff-tag">The gap</div>
+          <p class="diff-problem">Listings-only platforms keep your addresses accurate, but leave you blind to what shoppers actually experience at each store.</p>
+          <div class="diff-divider"></div>
+          <div class="diff-tag diff-tag-blue">What Birdeye delivers</div>
+          <p class="diff-answer">One platform that manages listings, reviews, surveys, and AI search visibility together, so store-level experience and brand visibility are never disconnected.</p>
+        </div>
+
+        <div class="diff-card">
+          <div class="diff-tag">The gap</div>
+          <p class="diff-problem">Legacy review platforms built in the pre-AI era still rely on manual analysis, slow reporting cycles, and static dashboards that do not scale to 4,900 stores.</p>
+          <div class="diff-divider"></div>
+          <div class="diff-tag diff-tag-blue">What Birdeye delivers</div>
+          <p class="diff-answer">AI-native by design. Insights AI summarizes thousands of reviews in seconds, surfaces trends across banners, and gives the consumer insights team signal, not noise.</p>
+        </div>
+
+        <div class="diff-card">
+          <div class="diff-tag">The gap</div>
+          <p class="diff-problem">SMB-focused tools work for a few locations, but their infrastructure, governance, and reporting break down at enterprise scale across multiple banners.</p>
+          <div class="diff-divider"></div>
+          <div class="diff-tag diff-tag-blue">What Birdeye delivers</div>
+          <p class="diff-answer">Built for multi-banner enterprises from day one. Role-based dashboards, banner-level governance, and a dedicated enterprise team that knows what scale really means.</p>
+        </div>
+      </div>
+
+      <div class="diff-proof">
+        <div class="diff-proof-item">
+          <div class="diff-proof-num">#1</div>
+          <div class="diff-proof-lbl">Enterprise on G2<br>across 12 categories</div>
+        </div>
+        <div class="diff-proof-divider"></div>
+        <div class="diff-proof-item">
+          <div class="diff-proof-num">200K+</div>
+          <div class="diff-proof-lbl">Locations managed<br>on the platform today</div>
+        </div>
+        <div class="diff-proof-divider"></div>
+        <div class="diff-proof-item">
+          <div class="diff-proof-num">3,600+</div>
+          <div class="diff-proof-lbl">Verified customer<br>reviews on G2</div>
+        </div>
+      </div>
     </div>
   </section>
 
